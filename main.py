@@ -9,8 +9,8 @@ screen = Screen()
 screen.tracer(0)
 game_is_on = True
 
-# player_paddle = Paddle(paddle_type="player")
-# ai_paddle = Paddle(paddle_type="ai")
+def is_player_on():
+    question = input("Type '1' to play a 1-player game. Type '2' to play a 2-player game.")
 
 r_paddle = Paddle((350, 0))
 l_paddle = Paddle((-350, 0))
