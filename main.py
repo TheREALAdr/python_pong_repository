@@ -10,7 +10,11 @@ screen.tracer(0)
 game_is_on = True
 
 def is_player_on():
-    question = input("Type '1' to play a 1-player game. Type '2' to play a 2-player game.")
+    question = input("Type '1' to play a 1-player game. Type '2' to play a 2-player game.").lower()
+    if question == "1" or question == "one":
+        return True
+    else:
+        return False
 
 r_paddle = Paddle((350, 0))
 l_paddle = Paddle((-350, 0))
@@ -34,6 +38,7 @@ screen.onkeypress(fun=r_paddle.go_down, key="Down")
 
 
 
+
 while game_is_on:
     time.sleep(ball.speed)
     screen.update()
@@ -54,12 +59,12 @@ while game_is_on:
         scoreboard.r_point()
 
     # AI Player
-
-    if l_paddle.ycor() < ball.ycor() and abs(l_paddle.ycor() - ball.ycor()) > 10:
-        l_paddle.go_up()
-
-    if l_paddle.ycor() > ball.ycor() and abs(l_paddle.ycor() - ball.ycor()) > 10:
-        l_paddle.go_down()
+    
+    if is_player_on():
+        if l_paddle.ycor() < ball.ycor() and abs(l_paddle.ycor() - ball.ycor()) > 10:
+            l_paddle.go_up()
+        elif l_paddle.ycor() > ball.ycor() and abs(l_paddle.ycor() - ball.ycor()) > 10:
+            l_paddle.go_down()
 
 
 screen.exitonclick()
