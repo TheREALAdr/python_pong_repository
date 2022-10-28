@@ -19,3 +19,15 @@ game_is_on = True
 screen.bgcolor("black")
 screen.setup(width=800, height=600)
 screen.title("PONGGGG")
+
+# Set paddle controls
+
+screen.listen()
+
+screen.onkeypress(fun=l_paddle.go_down, key="Down")
+
+while game_is_on:
+  screen.update()
+
+
+screen.exitonclick()
