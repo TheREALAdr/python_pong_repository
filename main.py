@@ -9,19 +9,31 @@ screen = Screen()
 screen.tracer(0)
 game_is_on = True
 
-def is_player_on():
-    question = input("Type '1' to play a 1-player game. Type '2' to play a 2-player game.").lower()
-    if question == "1" or question == "one":
-        return True
-    else:
-        return False
-
 r_paddle = Paddle((350, 0))
 l_paddle = Paddle((-350, 0))
 ball = Ball()
 scoreboard = Scoreboard()
 
-screen.bgcolor("deep sky blue")
+
+def is_1_player():
+    response = screen.textinput(title="Gamemode!",
+                                prompt="Type '1' for 1-player mode; type '2' for 2-player mode.").lower()
+    if response == "1" or response == "one":
+        return True
+    else:
+        return False
+
+
+def start_ai():
+    if l_paddle.ycor() < ball.ycor() and abs(l_paddle.ycor() - ball.ycor()) > 10:
+        l_paddle.go_up()
+    elif l_paddle.ycor() > ball.ycor() and abs(l_paddle.ycor() - ball.ycor()) > 10:
+        l_paddle.go_down()
+
+
+result = is_1_player()
+
+screen.bgcolor("navy blue")
 screen.setup(width=800, height=600)
 screen.title("PONGGGG")
 
@@ -30,14 +42,23 @@ screen.title("PONGGGG")
 screen.listen()
 
 screen.onkeypress(fun=l_paddle.go_up, key="w")
-screen.onkeypress(fun=r_paddle.go_up, key="Up")
-
 screen.onkeypress(fun=l_paddle.go_down, key="s")
 
+screen.onkeypress(fun=r_paddle.go_up, key="Up")
 screen.onkeypress(fun=r_paddle.go_down, key="Down")
 
-
-
+screenturtle = Turtle()
+screenturtle.color("white")
+screenturtle.hideturtle()
+screenturtle.pencolor("white")
+screenturtle.penup()
+screenturtle.goto(0, 300)
+screenturtle.setheading(270)
+while screenturtle.ycor() != -300:
+    screenturtle.pendown()
+    screenturtle.forward(15)
+    screenturtle.penup()
+screenturtle.hideturtle()
 
 while game_is_on:
     time.sleep(ball.speed)
@@ -52,19 +73,14 @@ while game_is_on:
     if ball.xcor() > 380:
         ball.reset_position()
         scoreboard.l_point()
-
-
     if ball.xcor() < -380:
         ball.reset_position()
         scoreboard.r_point()
 
     # AI Player
-    
-    if is_player_on():
-        if l_paddle.ycor() < ball.ycor() and abs(l_paddle.ycor() - ball.ycor()) > 10:
-            l_paddle.go_up()
-        elif l_paddle.ycor() > ball.ycor() and abs(l_paddle.ycor() - ball.ycor()) > 10:
-            l_paddle.go_down()
-
+    if not result:
+        continue
+    else:
+        start_ai()
 
 screen.exitonclick()
